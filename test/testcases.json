@@ -1,0 +1,1294 @@
+[
+    {
+        "name": "filter on orderItems with lt for int",
+        "tableName": "orderItems",
+        "url": "?$filter=qty lt 2",
+        "expected": [
+            {
+                "id": 3,
+                "item": 1,
+                "qty": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with lt for int and negation with not",
+        "tableName": "orderItems",
+        "url": "?$filter=not qty lt 2",
+        "expected": [
+            {
+                "id": 1,
+                "qty": 3,
+                "item": 1
+            },
+            {
+                "id": 2,
+                "qty": 2,
+                "item": 3
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with lt for float",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price lt 2.5",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with lt for float and negation with not",
+        "tableName": "inventoryItems",
+        "url": "?$filter=not price lt 2.5",
+        "expected": [
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with or for lt and eq",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price lt 2.5 or price eq 2.5",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with and for lt and eq",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price lt 2.5 and name eq 'plate'",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with gt for int",
+        "tableName": "orderItems",
+        "url": "?$filter=qty gt 2",
+        "expected": [
+            {
+                "id": 1,
+                "qty": 3,
+                "item": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with gt for int and negation with not",
+        "tableName": "orderItems",
+        "url": "?$filter=not qty gt 2",
+        "expected": [
+            {
+                "id": 2,
+                "qty": 2,
+                "item": 3
+            },
+            {
+                "id": 3,
+                "item": 1,
+                "qty": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with gt for float",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price gt 2.5",
+        "expected": [
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with gt for float and negation with not",
+        "tableName": "inventoryItems",
+        "url": "?$filter=not price gt 2.5",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with or for gt and eq",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price gt 2.5 or price eq 2.5",
+        "expected": [
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with and for gt and eq",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price gt 2.5 and name eq 'chair'",
+        "expected": [
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with ge for int",
+        "tableName": "orderItems",
+        "url": "?$filter=qty ge 2",
+        "expected": [
+            {
+                "id": 1,
+                "qty": 3,
+                "item": 1
+            },
+            {
+                "id": 2,
+                "qty": 2,
+                "item": 3
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with ge for int and negation with not",
+        "tableName": "orderItems",
+        "url": "?$filter=not qty ge 2",
+        "expected": [
+            {
+                "id": 3,
+                "item": 1,
+                "qty": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with ge for float",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price ge 2.5",
+        "expected": [
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with ge for float and negation with not",
+        "tableName": "inventoryItems",
+        "url": "?$filter=not price ge 2.5",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with le for int",
+        "tableName": "orderItems",
+        "url": "?$filter=qty le 2",
+        "expected": [
+            {
+                "id": 2,
+                "qty": 2,
+                "item": 3
+            },
+            {
+                "id": 3,
+                "item": 1,
+                "qty": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with le for int and negation with not",
+        "tableName": "orderItems",
+        "url": "?$filter=not qty le 2",
+        "expected": [
+            {
+                "id": 1,
+                "qty": 3,
+                "item": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with le for float",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price le 2.5",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with le for float and negation with not",
+        "tableName": "inventoryItems",
+        "url": "?$filter=not price le 2.5",
+        "expected": [
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with ne for int",
+        "tableName": "orderItems",
+        "url": "?$filter=qty ne 2",
+        "expected": [
+            {
+                "id": 1,
+                "qty": 3,
+                "item": 1
+            },
+            {
+                "id": 3,
+                "item": 1,
+                "qty": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with ne for int and negation with not",
+        "tableName": "orderItems",
+        "url": "?$filter=not qty ne 2",
+        "expected": [
+            {
+                "id": 2,
+                "qty": 2,
+                "item": 3
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with ne for float",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price ne 2.5",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with ne for float and negation with not",
+        "tableName": "inventoryItems",
+        "url": "?$filter=not price ne 2.5",
+        "expected": [
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with eq for int",
+        "tableName": "orderItems",
+        "url": "?$filter=qty eq 2",
+        "expected": [
+            {
+                "id": 2,
+                "qty": 2,
+                "item": 3
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with eq for int and negation with not",
+        "tableName": "orderItems",
+        "url": "?$filter=not qty eq 2",
+        "expected": [
+            {
+                "id": 1,
+                "qty": 3,
+                "item": 1
+            },
+            {
+                "id": 3,
+                "item": 1,
+                "qty": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with eq for float",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price eq 2.5",
+        "expected": [
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with eq for float and negation with not",
+        "tableName": "inventoryItems",
+        "url": "?$filter=not price eq 2.5",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "filter on customers for eq",
+        "tableName": "customers",
+        "url": "?$filter=name eq 'Robin'",
+        "expected": [
+            {
+                "id": 2,
+                "name": "Robin",
+                "active": true
+            }
+        ]
+    },
+    {
+        "name": "filter on customers for ne",
+        "tableName": "customers",
+        "url": "?$filter=name ne 'Robin'",
+        "expected": [
+            {
+                "id": 1,
+                "name": "Fynn",
+                "active": false
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with math add 3",
+        "tableName": "orderItems",
+        "url": "?$filter=qty add 3 gt 2",
+        "expected": [
+            {
+                "id": 1,
+                "qty": 3,
+                "item": 1
+            },
+            {
+                "id": 2,
+                "qty": 2,
+                "item": 3
+            },
+            {
+                "id": 3,
+                "item": 1,
+                "qty": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with math add 3",
+        "tableName": "orderItems",
+        "url": "?$filter=qty add 3 lt 2",
+        "expected": []
+    },
+    {
+        "name": "filter on inventoryItems with math add 3",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price add 3 gt 2.5",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with math add 3",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price add 3 lt 2.5",
+        "expected": []
+    },
+    {
+        "name": "filter on orderItems with math sub 3",
+        "tableName": "orderItems",
+        "url": "?$filter=qty sub 3 gt 2",
+        "expected": []
+    },
+    {
+        "name": "filter on orderItems with math sub 3",
+        "tableName": "orderItems",
+        "url": "?$filter=qty sub 3 lt 2",
+        "expected": [
+            {
+                "id": 1,
+                "qty": 3,
+                "item": 1
+            },
+            {
+                "id": 2,
+                "qty": 2,
+                "item": 3
+            },
+            {
+                "id": 3,
+                "item": 1,
+                "qty": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with math sub 3",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price sub 3 gt 2.5",
+        "expected": []
+    },
+    {
+        "name": "filter on inventoryItems with math sub 3",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price sub 3 lt 2.5",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with math mul 3",
+        "tableName": "orderItems",
+        "url": "?$filter=qty mul 3 gt 2",
+        "expected": [
+            {
+                "id": 1,
+                "qty": 3,
+                "item": 1
+            },
+            {
+                "id": 2,
+                "qty": 2,
+                "item": 3
+            },
+            {
+                "id": 3,
+                "item": 1,
+                "qty": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with math mul 3",
+        "tableName": "orderItems",
+        "url": "?$filter=qty mul 3 lt 2",
+        "expected": []
+    },
+    {
+        "name": "filter on inventoryItems with math mul 3",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price mul 3 gt 2.5",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with math mul 3",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price mul 3 lt 2.5",
+        "expected": []
+    },
+    {
+        "name": "filter on orderItems with math div 3",
+        "tableName": "orderItems",
+        "url": "?$filter=qty div 3 gt 2",
+        "expected": []
+    },
+    {
+        "name": "filter on orderItems with math div 3",
+        "tableName": "orderItems",
+        "url": "?$filter=qty div 3 lt 2",
+        "expected": [
+            {
+                "id": 1,
+                "qty": 3,
+                "item": 1
+            },
+            {
+                "id": 2,
+                "qty": 2,
+                "item": 3
+            },
+            {
+                "id": 3,
+                "item": 1,
+                "qty": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with math div 3",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price div 3 gt 2.5",
+        "expected": []
+    },
+    {
+        "name": "filter on inventoryItems with math div 3",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price div 3 lt 2.5",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with math divby 3",
+        "tableName": "orderItems",
+        "url": "?$filter=qty divby 3 gt 2",
+        "expected": []
+    },
+    {
+        "name": "filter on orderItems with math divby 3",
+        "tableName": "orderItems",
+        "url": "?$filter=qty divby 3 lt 2",
+        "expected": [
+            {
+                "id": 1,
+                "qty": 3,
+                "item": 1
+            },
+            {
+                "id": 2,
+                "qty": 2,
+                "item": 3
+            },
+            {
+                "id": 3,
+                "item": 1,
+                "qty": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with math divby 3",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price divby 3 gt 2.5",
+        "expected": []
+    },
+    {
+        "name": "filter on inventoryItems with math divby 3",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price divby 3 lt 2.5",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "filter on orderItems with math mod 3",
+        "tableName": "orderItems",
+        "url": "?$filter=qty mod 3 gt 2",
+        "expected": []
+    },
+    {
+        "name": "filter on orderItems with math mod 3",
+        "tableName": "orderItems",
+        "url": "?$filter=qty mod 3 lt 2",
+        "expected": [
+            {
+                "id": 1,
+                "qty": 3,
+                "item": 1
+            },
+            {
+                "id": 3,
+                "item": 1,
+                "qty": 1
+            }
+        ]
+    },
+    {
+        "name": "filter on inventoryItems with math mod 3",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price mod 3 gt 2.5",
+        "expected": []
+    },
+    {
+        "name": "filter on inventoryItems with math mod 3",
+        "tableName": "inventoryItems",
+        "url": "?$filter=price mod 3 lt 2.5",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "use skip on inventory",
+        "tableName": "inventoryItems",
+        "url": "?$skip=2'",
+        "expected": [
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "use top on inventory",
+        "tableName": "inventoryItems",
+        "url": "?$top=2",
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            }
+        ]
+    },
+    {
+        "name": "use orderby default on price in inventory",
+        "tableName": "inventoryItems",
+        "url": "?$orderby=price",
+        "checkOrder": true,
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "use orderby asc on price in inventory",
+        "tableName": "inventoryItems",
+        "url": "?$orderby=price asc",
+        "checkOrder": true,
+        "expected": [
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            }
+        ]
+    },
+    {
+        "name": "use orderby desc on price in inventory",
+        "tableName": "inventoryItems",
+        "url": "?$orderby=price desc",
+        "checkOrder": true,
+        "expected": [
+            {
+                "id": 6,
+                "name": "chair",
+                "category": 1,
+                "price": 3.75
+            },
+            {
+                "id": 2,
+                "name": "fork",
+                "category": 2,
+                "price": 3
+            },
+            {
+                "id": 4,
+                "name": "spoon",
+                "category": 2,
+                "price": 2.5
+            },
+            {
+                "id": 5,
+                "name": "table",
+                "category": 1,
+                "price": 1.75
+            },
+            {
+                "id": 3,
+                "name": "knife",
+                "category": 2,
+                "price": 1.5
+            },
+            {
+                "id": 1,
+                "name": "plate",
+                "category": 3,
+                "price": 1
+            }
+        ]
+    },
+    {
+        "name": "simple expand",
+        "tableName": "orders",
+        "url": "?$expand=items",
+        "expected": [
+            {
+                "id": 1,
+                "customer": 1,
+                "items": [
+                    {
+                        "id": 1,
+                        "qty": 3,
+                        "item": 1
+                    },
+                    {
+                        "id": 2,
+                        "qty": 2,
+                        "item": 3
+                    }
+                ],
+                "orderDate": "2022-03-03T15:16:29.892Z"
+            },
+            {
+                "id": 2,
+                "customer": 2,
+                "items": [
+                    {
+                        "id": 3,
+                        "item": 1,
+                        "qty": 1
+                    }
+                ],
+                "orderDate": "2022-06-03T15:16:29.892Z"
+            },
+            {
+                "id": 3,
+                "customer": 1,
+                "items": [],
+                "orderDate": "2022-10-03T15:16:29.892Z"
+            }
+        ]
+    },
+    {
+        "name": "expand with filter",
+        "tableName": "orders",
+        "url": "?$expand=items($filter=qty lt 3)",
+        "expected": [
+            {
+                "id": 1,
+                "customer": 1,
+                "items": [
+                    {
+                        "id": 2,
+                        "qty": 2,
+                        "item": 3
+                    }
+                ],
+                "orderDate": "2022-03-03T15:16:29.892Z"
+            },
+            {
+                "id": 2,
+                "customer": 2,
+                "items": [
+                    {
+                        "id": 3,
+                        "item": 1,
+                        "qty": 1
+                    }
+                ],
+                "orderDate": "2022-06-03T15:16:29.892Z"
+            },
+            {
+                "id": 3,
+                "customer": 1,
+                "items": [],
+                "orderDate": "2022-10-03T15:16:29.892Z"
+            }
+        ]
+    }
+]

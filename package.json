@@ -1,0 +1,37 @@
+{
+  "name": "odatafy-mongodb",
+  "version": "0.0.1",
+  "description": "convert oData requests through odatafy to MongoDB queries ",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "nyc mocha -r ts-node/register --exit  \"./test/**/*.test.ts\" --timeout 0",
+    "build": "tsc",
+    "build-and-run": "tsc && node dist/index.js",
+    "docs": "npx typedoc index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gang-of-Fork/odatafy-mongodb.git"
+  },
+  "author": "Gang of Fork",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Gang-of-Fork/odatafy-mongodb/issues"
+  },
+  "homepage": "https://github.com/Gang-of-Fork/odatafy-mongodb#readme",
+  "devDependencies": {
+    "@types/chai": "^4.3.1",
+    "@types/mocha": "^9.1.1",
+    "chai": "^4.3.6",
+    "dotenv": "^16.0.1",
+    "mocha": "^10.0.0",
+    "typedoc": "^0.22.18"
+  },
+  "dependencies": {
+    "mongodb": "^4.7.0",
+    "typescript": "^4.6.4",
+    "nyc": "^15.1.0",
+    "odatafy-parser": "^0.0.4",
+    "ts-node": "^10.8.0"
+  }
+}
