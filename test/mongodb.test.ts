@@ -32,6 +32,14 @@ describe('MongoDB Query integration tests', () => {
         //@ts-expect-error load json to db
         await Promise.all(testdata.default.map(async (testcollection: { tableName: string, data: any[] }) => {
             return await mdbClient.db(dbname).collection(testcollection.tableName).insertMany(testcollection.data.map(doc => {
+                if(testcollection.tableName == "orders") {
+                    return {
+                        ...doc,
+                        ...{ _id: doc.id },
+                        ...{ orderDate: new Date(doc.orderDate) }
+                    }
+                }
+
                 return {
                     ...doc,
                     ...{ _id: doc.id }
@@ -90,14 +98,15 @@ describe('MongoDB Query integration tests', () => {
         });
     });
 
-    /*
     test('Test lookup', async () => {
-        const query = getQueryFromUrl('?$expand=items');
+        const query = getQueryFromUrl("?$computed=tolower('Test') as test");
+
+        console.log(JSON.stringify(query, undefined, 4));
 
         const queryResult = await mdbClient.db(dbname).collection('orders').aggregate(query).toArray();
 
+        console.log(queryResult);
     });
-    */
 
     after(async () => {
         await Promise.all((await mdbClient.db(dbname).collections()).map(async (collection) => {

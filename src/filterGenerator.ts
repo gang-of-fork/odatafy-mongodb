@@ -1,19 +1,36 @@
-import { filterParser, FilterNode, NodeTypes, OperatorNode, ConstantNode, SymbolNode, OperatorNodeOperators } from 'odatafy-parser';
+import {
+    filterParser, FilterNode, NodeTypes,
+    OperatorNode, ConstantNode, SymbolNode,
+    OperatorNodeOperators, FuncNames0Args, FuncNode0Args,
+    FuncNames1Args, FuncNode1Args, FuncNode2Args,
+    FuncNames2Args
+} from 'odatafy-parser';
 import { Document } from 'mongodb';
 
-export function generateMatchFromFilterExpr(filterExpr: string): Document {
-    const ast = filterParser.parse(filterExpr);
-
-    return generateMatchStage(ast);
+type ProcessingOpts = {
+    withoutExpr?: boolean
 }
 
-export function generateMatchStage(ast: FilterNode): Document {
+/**
+ * TODO: Support geo functions
+ * TODO: time currently not supported - fun1arg
+ * TODO: totaloffset minutes not supported - func1arg
+ * TODO: Add advanced support for length based on type - func1arg
+ */
+
+export function generateMatchFromFilterExpr(filterExpr: string, opts?: ProcessingOpts): Document {
+    const ast = filterParser.parse(filterExpr);
+
+    return generateMatchStage(ast, opts);
+}
+
+export function generateMatchStage(ast: FilterNode, opts?: ProcessingOpts): Document {
     return {
-        '$match': processNode(ast)
+        '$match': processNode(ast, undefined, opts)
     }
 }
 
-function processNode(node: FilterNode, parentExpr?: boolean): any {
+export function processNode(node: FilterNode, parentExpr?: boolean, opts?: ProcessingOpts): any {
     if (!node) {
         throw new Error('Something went wrong, node is undefined');
     }
@@ -21,17 +38,112 @@ function processNode(node: FilterNode, parentExpr?: boolean): any {
     switch (node.nodeType) {
         case NodeTypes.OperatorNode:
         case undefined:
-            return processOperatorNode(node, parentExpr);
+            return processOperatorNode(node, parentExpr, opts);
         case NodeTypes.ConstantNode:
             return processConstantNode(node);
         case NodeTypes.SymbolNode:
             return processSymbolNode(node);
+        case NodeTypes.FuncNode0Args:
+            return processFuncNode0Args(node);
+        case NodeTypes.FuncNode1Args:
+            return processFuncNode1Args(node);
+        case NodeTypes.FuncNode2Args:
         default:
             throw new Error(`Unsupported NodeType: ${node.nodeType}`)
     }
 }
 
-function processOperatorNode(node: OperatorNode, parentExpr?: boolean): Document {
+function processFuncNode0Args(node: FuncNode0Args) {
+    switch (node.func) {
+        case FuncNames0Args.Maxdatetime:
+            return new Date(8640000000000000);
+        case FuncNames0Args.Mindatetime:
+            return new Date(-8640000000000000);
+        case FuncNames0Args.Now:
+            return new Date()
+    }
+}
+
+function processFuncNode1Args(node: FuncNode1Args) {
+    switch (node.func) {
+        case FuncNames1Args.Year:
+            return {
+                $year: processNode(node.args[0])
+            }
+        case FuncNames1Args.Month:
+            return {
+                $month: processNode(node.args[0])
+            }
+        case FuncNames1Args.Minute:
+            return {
+                $minute: processNode(node.args[0])
+            }
+        case FuncNames1Args.Second:
+            return {
+                $second: processNode(node.args[0])
+            }
+        case FuncNames1Args.Day:
+            return {
+                $dayOfMonth: processNode(node.args[0])
+            }
+        case FuncNames1Args.Date:
+            return {
+                $toDate: processNode(node.args[0])
+            }
+        case FuncNames1Args.Hour:
+            return {
+                $hour: processNode(node.args[0])
+            }
+        case FuncNames1Args.Fractionalseconds:
+            return {
+                $millisecond: processNode(node.args[0])
+            }
+        case FuncNames1Args.Totalseconds:
+            return {
+                $second: processNode(node.args[0])
+            }
+        case FuncNames1Args.Floor:
+            return {
+                $floor: processNode(node.args[0])
+            }
+        case FuncNames1Args.Ceiling:
+            return {
+                $ceil: processNode(node.args[0])
+            }
+        case FuncNames1Args.Length:
+            console.log(node.args[0]);
+            return {}
+        case FuncNames1Args.Toupper:
+            return {
+                $toUpper: processNode(node.args[0])
+            }
+        case FuncNames1Args.Tolower:
+            return {
+                $toLower: processNode(node.args[0])
+            }
+        case FuncNames1Args.Trim:
+            return {
+                $trim: {
+                    input: processNode(node.args[0])
+                }
+            }
+        case FuncNames1Args.Round:
+            return { 
+                $round: [processNode(node.args[0]), 2] 
+            }
+        default:
+            throw new Error(`Function ${node.func} is not supported`)
+    }
+
+}
+
+function processFuncNode2Args(node: FuncNode2Args) {
+    switch(node.func) {
+        case FuncNames2Args.Indexof:
+    }
+}
+
+function processOperatorNode(node: OperatorNode, parentExpr?: boolean, opts?: ProcessingOpts): Document {
     let needsExpr = false;
     let result: Document = {};
 
@@ -106,7 +218,6 @@ function processOperatorNode(node: OperatorNode, parentExpr?: boolean): Document
             }
             break;
         case OperatorNodeOperators.Div: //integer division
-            needsExpr = true;
             result = {
                 '$toInt': {
                     '$divide': [processNode(node.left, true), processNode(node.right, true)]
@@ -117,7 +228,7 @@ function processOperatorNode(node: OperatorNode, parentExpr?: boolean): Document
             throw new Error(`Unsupported operator: ${node.op}`)
     }
 
-    if (!parentExpr && needsExpr) {
+    if (!parentExpr && needsExpr && !opts?.withoutExpr) {
         return {
             "$expr": result
         }
