@@ -48,6 +48,7 @@ export function processNode(node: FilterNode, parentExpr?: boolean, opts?: Proce
         case NodeTypes.FuncNode1Args:
             return processFuncNode1Args(node);
         case NodeTypes.FuncNode2Args:
+            return processFuncNode2Args(node);
         default:
             throw new Error(`Unsupported NodeType: ${node.nodeType}`)
     }
@@ -140,6 +141,7 @@ function processFuncNode1Args(node: FuncNode1Args) {
 function processFuncNode2Args(node: FuncNode2Args) {
     switch(node.func) {
         case FuncNames2Args.Indexof:
+        
     }
 }
 

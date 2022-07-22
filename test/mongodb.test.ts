@@ -98,16 +98,6 @@ describe('MongoDB Query integration tests', () => {
         });
     });
 
-    test('Test lookup', async () => {
-        const query = getQueryFromUrl("?$computed=tolower('Test') as test");
-
-        console.log(JSON.stringify(query, undefined, 4));
-
-        const queryResult = await mdbClient.db(dbname).collection('orders').aggregate(query).toArray();
-
-        console.log(queryResult);
-    });
-
     after(async () => {
         await Promise.all((await mdbClient.db(dbname).collections()).map(async (collection) => {
             await collection.deleteMany({});
