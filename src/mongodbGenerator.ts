@@ -60,9 +60,3 @@ export function getQuery(parameters: oDataParameters): Document[] {
 
     return pipeline;
 }
-
-export function testMongoDB() {
-    console.log(JSON.stringify(getQuery({
-        computed: "Test eq null as lol"
-    }), undefined, 4));
-}

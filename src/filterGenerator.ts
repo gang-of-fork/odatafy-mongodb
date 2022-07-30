@@ -13,7 +13,7 @@ type ProcessingOpts = {
 
 /**
  * TODO: Support geo functions
- * TODO: time currently not supported - fun1arg
+ * TODO: date and time and totalseconds currently not supported - fun1arg
  * TODO: totaloffset minutes not supported - func1arg
  * TODO: Add advanced support for length based on type - func1arg
  */
@@ -87,10 +87,6 @@ function processFuncNode1Args(node: FuncNode1Args) {
             return {
                 $dayOfMonth: processNode(node.args[0])
             }
-        case FuncNames1Args.Date:
-            return {
-                $toDate: processNode(node.args[0])
-            }
         case FuncNames1Args.Hour:
             return {
                 $hour: processNode(node.args[0])
@@ -98,10 +94,6 @@ function processFuncNode1Args(node: FuncNode1Args) {
         case FuncNames1Args.Fractionalseconds:
             return {
                 $millisecond: processNode(node.args[0])
-            }
-        case FuncNames1Args.Totalseconds:
-            return {
-                $second: processNode(node.args[0])
             }
         case FuncNames1Args.Floor:
             return {
@@ -138,6 +130,7 @@ function processFuncNode1Args(node: FuncNode1Args) {
 
 }
 
+//TODO: add functions with 2 args
 function processFuncNode2Args(node: FuncNode2Args) {
     switch(node.func) {
         case FuncNames2Args.Indexof:
