@@ -4,13 +4,17 @@ import { generateMatchFromFilterExpr } from './filterGenerator';
 import { generateLimitFromTopExpr } from './limitGenerator';
 import { generateSkipFromSkipExpr } from './skipGenerator';
 import { generateSortFromOrderbyExpr } from './sortGenerator';
-import { generateLookupFromExpand } from './lookupGenerator';
+import { generateLookupFromExpand, CollectionMap } from './lookupGenerator';
 import { generateComputedStageFromComputedExpr } from './computedGenerator';
 
 import { oDataParameters } from 'odatafy-parser';
 import { Document } from 'mongodb';
 
-export function getQueryFromUrl(oDataUrl: string): Document[] {
+export type MongoDBODatafyOpts = {
+    expandMapping?: CollectionMap
+}
+
+export function getQueryFromUrl(oDataUrl: string, opts?: MongoDBODatafyOpts): Document[] {
     const query = url.parse(oDataUrl, true).query;
     const validParams = ['filter', 'orderby', 'skip', 'top', 'expand', 'computed'];
     const params = Object.keys(query);
@@ -28,14 +32,14 @@ export function getQueryFromUrl(oDataUrl: string): Document[] {
         }
     });
 
-    return getQuery(parseParameters);
+    return getQuery(parseParameters, opts);
 }
 
-export function getQuery(parameters: oDataParameters): Document[] {
+export function getQuery(parameters: oDataParameters, opts?: MongoDBODatafyOpts): Document[] {
     const pipeline: Document[] = [];
 
     if (parameters.expand) {
-        pipeline.push(...generateLookupFromExpand(parameters.expand, { 'items': 'orderItems' }));
+        pipeline.push(...generateLookupFromExpand(parameters.expand, opts?.expandMapping? opts.expandMapping: {}));
     }
 
     if (parameters.computed) {
