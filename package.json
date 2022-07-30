@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "description": "convert oData requests through odatafy to MongoDB queries ",
   "main": "./dist/index.js",
+  "keywords": [
+    "odata",
+    "odata-v4",
+    "odatafy",
+    "mongodb"
+  ],
   "scripts": {
     "test": "nyc mocha -r ts-node/register --exit  \"./test/**/*.test.ts\" --timeout 0",
     "build": "tsc",

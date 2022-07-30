@@ -1,0 +1,30 @@
+name: Publish to npm registry
+
+on: 
+  workflow_run:
+    workflows: ["testing"]
+    branches: [main]
+    types: 
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build and Push
+    steps:
+      - name: git-checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 12
+
+      - name: Install all dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
