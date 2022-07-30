@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import * as mongoDB from 'mongodb';
 import * as dotenv from 'dotenv';
 
-import { getQueryFromUrl, getQuery } from '../src/mongodbGenerator';
+import { getQueryFromUrl } from '../src/mongodbGenerator';
 
 import * as testdata from './testdata.json';
 
@@ -39,10 +39,15 @@ describe('Function integration tests', () => {
         }));
     });
 
-    test('', ()=>{
-
+    test('test getQueryFromUrl with malformed url', () => {
+        const url = '?filter=test eq 1&$filter=test eq 2';
+        try {
+            getQueryFromUrl(url)
+        } catch(e) {
+            expect((<Error>e).message).to.equal('Malformed oData url, cannot contain param: filter and param: $filter');
+        }
     });
-    
+
     after(async () => {
         await Promise.all((await mdbClient.db(dbname).collections()).map(async (collection) => {
             await collection.deleteMany({});

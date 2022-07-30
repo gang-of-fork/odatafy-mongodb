@@ -132,6 +132,75 @@ describe('Function integration tests', () => {
                             "orderDate": new Date("2021-10-03T15:16:29.892Z")
                         }
                     ]
+                },
+                {
+                    "name": "test floor",
+                    "tableName": "inventoryItems",
+                    "url": "?$filter=floor(price) eq 1",
+                    "expected": [
+                        {
+                            "id": 1,
+                        },
+                        {
+                            "id": 3,
+                        },
+                        {
+                            "id": 5,
+                        }
+                    ]
+                },
+                {
+                    "name": "test ceiling",
+                    "tableName": "inventoryItems",
+                    "url": "?$filter=ceiling(price) eq 2",
+                    "expected": [
+                        {
+                            "id": 3,
+                        },
+                        {
+                            "id": 5,
+                        }
+                    ]
+                },
+                {
+                    "name": "test toupper",
+                    "tableName": "inventoryItems",
+                    "url": "?$filter=toupper(name) eq 'PLATE'",
+                    "expected": [
+                        {
+                            "id": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "test tolower",
+                    "tableName": "customers",
+                    "url": "?$filter=tolower(name) eq 'robin'",
+                    "expected": [
+                        {
+                            "id": 2
+                        }
+                    ]
+                },
+                {
+                    "name": "test trim",
+                    "tableName": "inventoryItems",
+                    "url": "?$filter=trim(name) eq 'plate'",
+                    "expected": [
+                        {
+                            "id": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "test round",
+                    "tableName": "inventoryItems",
+                    "url": "?$filter=round(price) eq 3.75",
+                    "expected": [
+                        {
+                            "id": 6
+                        }
+                    ]
                 }
             ]
         }
@@ -146,9 +215,8 @@ describe('Function integration tests', () => {
                     expect(testcase.expected.length).to.equal(queryResult.length);
 
                     for(let qR of queryResult) {
-                        expect(testcase.expected.some(exp =>{
+                        expect(testcase.expected.some((exp: any) =>{
                             return Object.keys(exp).every(k => {
-                                //@ts-expect-error
                                 return exp[k].toString() == qR[k].toString();
                             });
                         })).to.equal(true);
