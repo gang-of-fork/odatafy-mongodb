@@ -18,12 +18,24 @@ type ProcessingOpts = {
  * TODO: Add advanced support for length based on type - func1arg
  */
 
+/**
+ * Get a MongoDB match stage based on oData filter expression
+ * @param filterExpr oData filter expression
+ * @param opts options for generating the match stage
+ * @returns MongoDB match stage
+ */
 export function generateMatchFromFilterExpr(filterExpr: string, opts?: ProcessingOpts): Document {
     const ast = filterParser.parse(filterExpr);
 
     return generateMatchStage(ast, opts);
 }
 
+/**
+ * Get a MongoDB skip stage based on the ast of a parsed oData filter expression
+ * @param ast abstract syntax tree of the filter expression
+ * @param opts options for generating the match stage
+ * @returns MongoDB match stage
+ */
 export function generateMatchStage(ast: FilterNode, opts?: ProcessingOpts): Document {
     return {
         '$match': processNode(ast, undefined, opts)
