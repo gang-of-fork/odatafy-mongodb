@@ -48,6 +48,19 @@ describe('Function integration tests', () => {
         }
     });
 
+    test('test that pipeline is not empty', async ()=>{
+        const url = '';
+        const query = getQueryFromUrl(url);
+
+        expect(query.length).not.to.equal(0);
+
+        const queryResult = await mdbClient.db(dbname).collection('categories').aggregate(query).toArray();
+
+        queryResult.forEach(qR => {
+            expect(qR).to.not.have.property('odatafyMongoDBTempField');
+        });
+    });
+
     after(async () => {
         await Promise.all((await mdbClient.db(dbname).collections()).map(async (collection) => {
             await collection.deleteMany({});

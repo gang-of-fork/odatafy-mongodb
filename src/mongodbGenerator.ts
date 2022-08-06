@@ -11,7 +11,8 @@ import { oDataParameters } from 'odatafy-parser';
 import { Document } from 'mongodb';
 
 export type MongoDBODatafyOpts = {
-    expandMapping?: CollectionMap
+    expandMapping?: CollectionMap,
+    returnEmptyPipeline?: boolean
 }
 
 export function getQueryFromUrl(oDataUrl: string, opts?: MongoDBODatafyOpts): Document[] {
@@ -60,6 +61,22 @@ export function getQuery(parameters: oDataParameters, opts?: MongoDBODatafyOpts)
 
     if (parameters.top) {
         pipeline.push(generateLimitFromTopExpr(parameters.top));
+    }
+
+    //add default steps if pipline must not be empty
+    if(!opts?.returnEmptyPipeline) {
+        pipeline.push(
+            {
+                $addFields: {
+                    odatafyMongoDBTempField: ""
+                }
+            },
+            {
+                $project: {
+                    odatafyMongoDBTempField: 0
+                }
+            }
+        )
     }
 
     return pipeline;
