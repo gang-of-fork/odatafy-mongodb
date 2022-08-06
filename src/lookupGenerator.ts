@@ -10,6 +10,12 @@ export type CollectionMap = {
   [key: string]: string;
 };
 
+/**
+ * Get a MongoDB lookup stage based on oData expand parameter
+ * @param expr expression of the oData expand parameter
+ * @param collectionMap collection map to map properties of a data model to collection names
+ * @returns MongoDB lookup stage
+ */
 export function generateLookupFromExpand(
   expr: string,
   collectionMap: CollectionMap,

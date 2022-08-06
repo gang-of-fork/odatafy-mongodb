@@ -15,6 +15,12 @@ export type MongoDBODatafyOpts = {
     returnEmptyPipeline?: boolean
 }
 
+/**
+ * Get MongoDB aggregation query from a given url can be obtained by nodes req.url
+ * @param oDataUrl - the url format ?param=value
+ * @param opts options for getting the url
+ * @returns MongoDB aggregation query
+ */
 export function getQueryFromUrl(oDataUrl: string, opts?: MongoDBODatafyOpts): Document[] {
     const query = url.parse(oDataUrl, true).query;
     const validParams = ['filter', 'orderby', 'skip', 'top', 'expand', 'computed'];
@@ -36,6 +42,12 @@ export function getQueryFromUrl(oDataUrl: string, opts?: MongoDBODatafyOpts): Do
     return getQuery(parseParameters, opts);
 }
 
+/**
+ * Get a MongoDB based on oData url paramaters
+ * @param parameters parameters
+ * @param opts options for getting the url
+ * @returns MongoDB aggregaion pipeline
+ */
 export function getQuery(parameters: oDataParameters, opts?: MongoDBODatafyOpts): Document[] {
     const pipeline: Document[] = [];
 
