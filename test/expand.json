@@ -77,5 +77,36 @@
                 "orderDate": "2022-10-03T15:16:29.892Z"
             }
         ]
+    },
+    {
+        "name": "Expand with options",
+        "tableName": "orders",
+        "url": "?$expand=items(filter=qty gt 2)",
+        "expected": [
+            {
+                "id": 1,
+                "customer": 1,
+                "items": [
+                    {
+                        "id": 1,
+                        "qty": 3,
+                        "item": 1
+                    }
+                ],
+                "orderDate": "2022-03-03T15:16:29.892Z"
+            },
+            {
+                "id": 2,
+                "customer": 2,
+                "items": [],
+                "orderDate": "2022-06-03T15:16:29.892Z"
+            },
+            {
+                "id": 3,
+                "customer": 1,
+                "items": [],
+                "orderDate": "2022-10-03T15:16:29.892Z"
+            }
+        ]
     }
 ]
