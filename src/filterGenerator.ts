@@ -146,7 +146,6 @@ function processFuncNode1Args(node: FuncNode1Args) {
 function processFuncNode2Args(node: FuncNode2Args) {
     switch(node.func) {
         case FuncNames2Args.Indexof:
-        
     }
 }
 

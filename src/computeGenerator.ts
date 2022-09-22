@@ -1,4 +1,4 @@
-import { computedParser, ComputedNode, ComputedItemNode } from 'odatafy-parser';
+import { computeParser, ComputeNode, ComputeItemNode } from 'odatafy-parser';
 import { Document } from 'mongodb';
 
 import { processNode } from './filterGenerator';
@@ -8,10 +8,10 @@ import { processNode } from './filterGenerator';
  * @param computedExpr expression of compute parameter
  * @returns MongoDB addFields stage
  */
-export function generateComputedStageFromComputedExpr(computedExpr: string): Document {
-    const ast = computedParser.parse(computedExpr);
+export function generateComputeStageFromComputedExpr(computedExpr: string): Document {
+    const ast = computeParser.parse(computedExpr);
 
-    return generateComputedStage(ast)
+    return generateComputeStage(ast)
 }
 
 /**
@@ -19,11 +19,11 @@ export function generateComputedStageFromComputedExpr(computedExpr: string): Doc
  * @param ast abstract syntax tree of a parsed oData compute expression
  * @returns MongoDB addFields stage
  */
-export function generateComputedStage(ast: ComputedNode): Document {
+export function generateComputeStage(ast: ComputeNode): Document {
     let fields: { [ key: string]: any  } = {};
 
-    ast.value.forEach((itemNode: ComputedItemNode) => {
-        fields[itemNode.computedIdentifier] = processNode(itemNode.commonExpr, false, { withoutExpr: true })
+    ast.value.forEach((itemNode: ComputeItemNode) => {
+        fields[itemNode.computeIdentifier] = processNode(itemNode.commonExpr, false, { withoutExpr: true })
     });
 
     return { 

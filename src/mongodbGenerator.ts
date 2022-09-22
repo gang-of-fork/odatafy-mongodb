@@ -4,8 +4,9 @@ import { generateMatchFromFilterExpr } from './filterGenerator';
 import { generateLimitFromTopExpr } from './limitGenerator';
 import { generateSkipFromSkipExpr } from './skipGenerator';
 import { generateSortFromOrderbyExpr } from './sortGenerator';
+import { generateProjectFromSelectExpr } from './selectGenerator';
 import { generateLookupFromExpand, CollectionMap } from './lookupGenerator';
-import { generateComputedStageFromComputedExpr } from './computedGenerator';
+import { generateComputeStageFromComputedExpr } from './computeGenerator';
 
 import { oDataParameters } from 'odatafy-parser';
 import { Document } from 'mongodb';
@@ -23,7 +24,7 @@ export type MongoDBODatafyOpts = {
  */
 export function getQueryFromUrl(oDataUrl: string, opts?: MongoDBODatafyOpts): Document[] {
     const query = url.parse(oDataUrl, true).query;
-    const validParams = ['filter', 'orderby', 'skip', 'top', 'expand', 'computed'];
+    const validParams = ['filter', 'orderby', 'skip', 'top', 'expand', 'compute', 'select'];
     const params = Object.keys(query);
 
     let parseParameters: oDataParameters = {}
@@ -55,8 +56,8 @@ export function getQuery(parameters: oDataParameters, opts?: MongoDBODatafyOpts)
         pipeline.push(...generateLookupFromExpand(parameters.expand, opts?.expandMapping? opts.expandMapping: {}));
     }
 
-    if (parameters.computed) {
-        pipeline.push(generateComputedStageFromComputedExpr(parameters.computed));
+    if (parameters.compute) {
+        pipeline.push(generateComputeStageFromComputedExpr(parameters.compute));
     }
 
     if (parameters.filter) {
@@ -75,8 +76,12 @@ export function getQuery(parameters: oDataParameters, opts?: MongoDBODatafyOpts)
         pipeline.push(generateLimitFromTopExpr(parameters.top));
     }
 
-    //add default steps if pipline must not be empty
-    if(!opts?.returnEmptyPipeline) {
+    if(parameters.select) {
+        pipeline.push(generateProjectFromSelectExpr(parameters.select));
+    }
+
+    //add default steps if pipline must not be empty - i.e. in mongoose an empty pipeline returns an error
+    if(!opts?.returnEmptyPipeline && pipeline.length == 0) {
         pipeline.push(
             {
                 $addFields: {

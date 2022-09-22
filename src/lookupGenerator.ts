@@ -1,6 +1,5 @@
 import { Document } from "mongodb";
-import { ExpandItemNode, expandParser } from "odatafy-parser";
-
+import { ExpandPathNode, ExpandPathNodeWithOptions, NodeTypes, expandParser, ExpandItemNode } from "odatafy-parser";
 import { generateMatchStage } from "./filterGenerator";
 import { generateSortStage } from "./sortGenerator";
 import { generateLimitStage } from "./limitGenerator";
@@ -24,27 +23,80 @@ export function generateLookupFromExpand(
 
   const expNode = expandParser.parse(expr);
 
-  expNode.value.forEach((node: ExpandItemNode) => {
+  expNode.value.forEach((node: ExpandPathNode | ExpandPathNodeWithOptions) => {
     //generate lookup pipeline
     const pipeline: Document[] = [];
 
-    if (node.options.filter) {
-      pipeline.push(generateMatchStage(node.options.filter));
+    //Is path node without options
+    if (node.nodeType == NodeTypes.ExpandPathNode) {
+
+      const extractedPaths: string[] = []
+
+      node.value.forEach((itemNode: ExpandItemNode) => {
+        if (itemNode.nodeType == NodeTypes.ExpandIdentifierNode) {
+          extractedPaths.push(itemNode.value);
+        }
+      });
+
+      const path = extractedPaths.join('.');
+
+      if (path in collectionMap) {
+        result = [...result, ...getLookupQuery(path, collectionMap[path])];
+      }
+
     }
 
-    if (node.options.orderby) {
-      pipeline.push(generateSortStage(node.options.orderby));
+    //Is path node without options
+    if (node.nodeType == NodeTypes.ExpandPathNodeWithOptions) {
+
+      const extractedPaths: string[] = []
+
+      node.value.forEach((itemNode: ExpandItemNode) => {
+        if (itemNode.nodeType == NodeTypes.ExpandIdentifierNode) {
+          extractedPaths.push(itemNode.value);
+        }
+      });
+
+      const path = extractedPaths.join('.');
+
+      if (path in collectionMap) {
+        //only process options after checking if field is in collectionMap to safe some performance
+        const optionsPipeline: Document[] = [];
+        
+        if (node.optionType == 'default') {
+          //@ts-expect-error
+          if (node.options.filter) {
+            //@ts-expect-error
+            optionsPipeline.push(generateMatchStage(node.options.filter));
+          }
+
+          //@ts-expect-error
+          if (node.options.orderby) {
+            //@ts-expect-error
+            optionsPipeline.push(generateSortStage(node.options.orderby));
+          }
+
+          //@ts-expect-error
+          if (node.options.skip) {
+            //@ts-expect-error
+            optionsPipeline.push(generateSkipStage(node.options.skip));
+          }
+
+          //@ts-expect-error
+          if (node.options.top) {
+            //@ts-expect-error
+            optionsPipeline.push(generateLimitStage(node.options.top));
+          }
+
+          result = [...result, ...getLookupQuery(path, collectionMap[path], optionsPipeline)];
+        }
+
+      }
+
     }
 
-    if (node.options.skip) {
-      pipeline.push(generateSkipStage(node.options.skip));
-    }
 
-    if (node.options.top) {
-      pipeline.push(generateLimitStage(node.options.top));
-    }
-
-    result = [...result, ...getLookupQuery(node.identifier, collectionMap[node.identifier], pipeline)];
+    return pipeline
   });
 
   return result;
@@ -75,10 +127,10 @@ function getLookupQuery(field: string, collection: string, pipeline: Document[] 
                     "$cond": {
                       "if": "$$mongodbODataTempJoinIsArray",
                       "then": {
-                          "$in": [
-                            "$_id", 
-                            "$$mongodbODataTempJoinFieldValue"
-                          ]
+                        "$in": [
+                          "$_id",
+                          "$$mongodbODataTempJoinFieldValue"
+                        ]
                       },
                       "else": {
                         "$eq": [
@@ -86,7 +138,7 @@ function getLookupQuery(field: string, collection: string, pipeline: Document[] 
                           "$$mongodbODataTempJoinFieldValue"
                         ]
                       },
-  
+
                     },
                   },
                   true

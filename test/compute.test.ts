@@ -46,7 +46,7 @@ describe('Function integration tests', () => {
                 {
                     "name": "test compute with simple add",
                     "tableName": "inventoryItems",
-                    "url": "?$computed=price add 2 as AddedPrice",
+                    "url": "?$compute=price add 2 as AddedPrice",
                     "expected": [
                         {
                             "AddedPrice": 3
