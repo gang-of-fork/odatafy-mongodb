@@ -4,6 +4,7 @@ import { generateMatchStage } from "./filterGenerator";
 import { generateSortStage } from "./sortGenerator";
 import { generateLimitStage } from "./limitGenerator";
 import { generateSkipStage } from "./skipGenerator";
+import { generateProjectStage } from "./selectGenerator";
 
 export type CollectionMap = {
   [key: string]: string;
@@ -46,7 +47,7 @@ export function generateLookupFromExpand(
 
     }
 
-    //Is path node without options
+    //Is path node with options
     if (node.nodeType == NodeTypes.ExpandPathNodeWithOptions) {
 
       const extractedPaths: string[] = []
@@ -86,6 +87,12 @@ export function generateLookupFromExpand(
           if (node.options.top) {
             //@ts-expect-error
             optionsPipeline.push(generateLimitStage(node.options.top));
+          }
+
+          //@ts-expect-error
+          if(node.options.select) {
+            //@ts-expect-error
+            optionsPipeline.push(generateProjectStage(node.options.select));
           }
 
           result = [...result, ...getLookupQuery(path, collectionMap[path], optionsPipeline)];
