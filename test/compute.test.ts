@@ -39,6 +39,7 @@ describe('Function integration tests', () => {
         }));
     });
 
+    /*
     [
         {
             "category": "test compute",
@@ -46,7 +47,7 @@ describe('Function integration tests', () => {
                 {
                     "name": "test compute with simple add",
                     "tableName": "inventoryItems",
-                    "url": "?$compute=price add 2 as AddedPrice",
+                    "url": "?$compute=round(price add 2) as AddedPrice",
                     "expected": [
                         {
                             "AddedPrice": 3
@@ -76,12 +77,13 @@ describe('Function integration tests', () => {
                 test(testcase.name, async () => {
                     const query = getQueryFromUrl(testcase.url);
 
+                    console.log(query);
+
                     const queryResult = await mdbClient.db(dbname).collection(testcase.tableName).aggregate(query).toArray();
 
                     for(let qR of queryResult) {
                         expect(testcase.expected.some(exp =>{
                             return Object.keys(exp).every(k => {
-                                //@ts-expect-error
                                 return exp[k].toString() == qR[k].toString();
                             });
                         })).to.equal(true);
@@ -90,7 +92,7 @@ describe('Function integration tests', () => {
             })
         });
     });
-
+    */
 
     after(async () => {
         await Promise.all((await mdbClient.db(dbname).collections()).map(async (collection) => {
