@@ -3,9 +3,11 @@ import {
     OperatorNode, ConstantNode, SymbolNode,
     OperatorNodeOperators, FuncNames0Args, FuncNode0Args,
     FuncNames1Args, FuncNode1Args, FuncNode2Args,
-    FuncNames2Args
+    FuncNames2Args,
+    FuncNodeVarArgs,
+    FuncNamesVarArgs
 } from 'odatafy-parser';
-import { Document } from 'mongodb';
+import { Document, ObjectId } from 'mongodb';
 
 type ProcessingOpts = {
     withoutExpr?: boolean
@@ -61,6 +63,8 @@ export function processNode(node: FilterNode, parentExpr?: boolean, opts?: Proce
             return processFuncNode1Args(node);
         case NodeTypes.FuncNode2Args:
             return processFuncNode2Args(node);
+        case NodeTypes.FuncNodeVarArgs:
+            return processFuncVarArgs(node);
         default:
             throw new Error(`Unsupported NodeType: ${node.nodeType}`)
     }
@@ -146,6 +150,23 @@ function processFuncNode1Args(node: FuncNode1Args) {
 function processFuncNode2Args(node: FuncNode2Args) {
     switch(node.func) {
         case FuncNames2Args.Indexof:
+    }
+}
+
+function processFuncVarArgs(node: FuncNodeVarArgs) {
+    switch(node.func) {
+        case FuncNamesVarArgs.Cast:
+            if(node.args.length == 2) {
+                if(node.args[0].nodeType == NodeTypes.ConstantNode && 
+                    node.args[1].nodeType == NodeTypes.SymbolNode && 
+                    node.args[1].value === 'ObjectId') {
+                        return new ObjectId(node.args[0].value);
+                }
+            }
+
+            throw new Error(`Typings not supported yet`);
+        default:
+            throw new Error(`Function ${node.func} is not supported`);
     }
 }
 
