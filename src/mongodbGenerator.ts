@@ -7,6 +7,7 @@ import { generateSortFromOrderbyExpr } from './sortGenerator';
 import { generateProjectFromSelectExpr } from './selectGenerator';
 import { generateLookupFromExpand, CollectionMap } from './lookupGenerator';
 import { generateComputeStageFromComputedExpr } from './computeGenerator';
+import { generateSearchFromSearchExpr } from './searchGenerator';
 
 import { oDataParameters } from 'odatafy-parser';
 import { Document } from 'mongodb';
@@ -24,7 +25,7 @@ export type MongoDBODatafyOpts = {
  */
 export function getQueryFromUrl(oDataUrl: string, opts?: MongoDBODatafyOpts): Document[] {
     const query = url.parse(oDataUrl, true).query;
-    const validParams = ['filter', 'orderby', 'skip', 'top', 'expand', 'compute', 'select'];
+    const validParams = ['filter', 'orderby', 'skip', 'top', 'expand', 'compute', 'select', 'search'];
     const params = Object.keys(query);
 
     let parseParameters: oDataParameters = {}
@@ -78,6 +79,10 @@ export function getQuery(parameters: oDataParameters, opts?: MongoDBODatafyOpts)
 
     if(parameters.select) {
         pipeline.push(generateProjectFromSelectExpr(parameters.select));
+    }
+
+    if(parameters.search) {
+        pipeline.push(generateSearchFromSearchExpr(parameters.search));
     }
 
     //add default steps if pipline must not be empty - i.e. in mongoose an empty pipeline returns an error
