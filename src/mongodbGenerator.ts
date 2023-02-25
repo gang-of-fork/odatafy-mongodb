@@ -14,7 +14,8 @@ import { Document } from 'mongodb';
 
 export type MongoDBODatafyOpts = {
     expandMapping?: CollectionMap,
-    returnEmptyPipeline?: boolean
+    returnEmptyPipeline?: boolean,
+    regexSearchFields?: string[]
 }
 
 /**
@@ -82,7 +83,7 @@ export function getQuery(parameters: oDataParameters, opts?: MongoDBODatafyOpts)
     }
 
     if(parameters.search) {
-        pipeline.push(generateSearchFromSearchExpr(parameters.search));
+        pipeline.push(generateSearchFromSearchExpr(parameters.search, opts?.regexSearchFields));
     }
 
     //add default steps if pipline must not be empty - i.e. in mongoose an empty pipeline returns an error
