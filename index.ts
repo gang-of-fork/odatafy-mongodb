@@ -1,6 +1,8 @@
 export * from './src/mongodbGenerator';
-import * as generator from './src/mongodbGenerator';
+//import * as generator from './src/mongodbGenerator';
 
-const query = generator.getQueryFromUrl('?$search=test', { regexSearchFields: [ 'test', 'test1' ] });
+//import { parseODataUrl } from 'odatafy-parser'
 
-console.log(query)
+//const query = parseODataUrl("?$filter=contains([1,2], 1) eq true");
+
+//console.log(JSON.stringify(query, null, 4));
