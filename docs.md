@@ -124,7 +124,7 @@
 
 ### Type Functions
 - :red_circle: cast(Type)
-- :red_circle: cast(Expression, Type)
+- :large_orange_diamond: cast(Expression, Type)
 - :red_circle: isof(Type)
 - :red_circle: isof(Expression, Type)
 
