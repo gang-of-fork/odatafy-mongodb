@@ -32,22 +32,24 @@
 ### Arithmetic Operators
 
 #### Addition
-:white_check_mark: add (Numeric Types)
-:large_orange_diamond: add (Date Types)
+- :white_check_mark: add (Numeric Types)
+- :large_orange_diamond: add (Date Types)
 
 #### Subtraction
-:white_check_mark: sub (Numeric Types)
-:large_orange_diamond: sub (Date Types)
+- :white_check_mark: sub (Numeric Types)
+- :large_orange_diamond: sub (Date Types)
 
 #### Multiplication
-:white_check_mark: mul (Numeric Types)
-:red_circle: mul (Date Types)
+- :white_check_mark: mul (Numeric Types)
+- :red_circle: mul (Date Types)
 
 #### Division
-:white_check_mark: div (Numeric Types)
-:red_circle: div (Date Types)
-:white_check_mark: divby (Numeric Types)
-:white_check_mark: mod (Numeric Types)
+- :white_check_mark: div (Numeric Types)
+- :red_circle: div (Date Types)
+- :white_check_mark: divby (Numeric Types)
+- :white_check_mark: mod (Numeric Types)
 
 #### Negation
-:white_check_mark: - (Numeric Types)
+- :white_check_mark: - (Numeric Types)
+
+### Arithmetic Operators :white_check_mark:
