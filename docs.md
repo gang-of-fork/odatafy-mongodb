@@ -116,3 +116,35 @@
 - :white_check_mark: maxdatetime()
 - :white_check_mark: now()
 - :white_check_mark: mindatetime()
+
+### Arithmetic Functions
+- :white_check_mark: ceiling(Number)
+- :white_check_mark: floor(Number)
+- :white_check_mark: round(Number)
+
+### Type Functions
+- :red_circle: cast(Type)
+- :red_circle: cast(Expression, Type)
+- :red_circle: isof(Type)
+- :red_circle: isof(Expression, Type)
+
+### Geo Functions
+
+#### geo.distance
+- :red_circle: geo.distance(GeographyPoint, GeographyPoint)
+- :red_circle: geo.distance(GeometryPoint, GeometryPoint)
+
+#### geo.intersects
+- :red_circle: geo.intersects(GeographyPoint, GeographyPolygon)
+- :red_circle: geo.intersects(GeometryPoint, GeometryPolygon)
+
+#### geo.length
+- :red_circle: geo.length(GeographyLineString)
+- :red_circle: geo.length(GeometryLineString)
+
+### Conditional Functions
+- red_circle: case(Edm.Boolean:expression, ..., Edm.Boolean:expression)
+
+### Lambda Operators
+- red_circle: any(Symbol:Edm.Boolean:expression)
+- red_circle: all(Symbol:Edm.Boolean:expression)

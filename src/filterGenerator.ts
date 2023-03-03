@@ -147,7 +147,7 @@ function processFuncNode1Args(node: FuncNode1Args) {
             }
         case FuncNames1Args.Round:
             return { 
-                $round: [processNode(node.args[0]), 2] 
+                $round: [processNode(node.args[0])] 
             }
         default:
             throw new Error(`Function ${node.func} is not supported`)
