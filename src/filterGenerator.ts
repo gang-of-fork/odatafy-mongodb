@@ -205,6 +205,11 @@ function processFuncNode2Args(node: FuncNode2Args) {
                     regex: `${processNode(node.args[1]).toString()}$`
                 }
             }
+        
+        case FuncNames2Args.Indexof:
+        case FuncNames2Args.Hassubsequence:
+        case FuncNames2Args.Hassubset:
+        case FuncNames2Args.Concat:
 
         default:
             throw new Error(`Function ${node.func} is not supported`)
