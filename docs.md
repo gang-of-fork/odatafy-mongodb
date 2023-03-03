@@ -14,76 +14,105 @@
 
 ### Logical Operators
 
-#### :white_check_mark: Comparison
+#### Comparison
 - :white_check_mark: eq (Equals)
 - :white_check_mark: ne (Not Equals)
 - :white_check_mark: gt (Greater Than)
 - :white_check_mark: lt (Less Than)
 
-#### :white_check_mark: Logical Experssions
+#### Logical Experssions
 - :white_check_mark: and (Logical and)
 - :white_check_mark: or (Logical or)
 - :white_check_mark: not (Logical not)
 
-#### :red_circle: Other
+#### Other
 - :red_circle: has (Has operator)
 - :red_circle: in (In operator)
 
 ### Arithmetic Operators
 
-#### :large_orange_diamond: Addition
+#### Addition
 - :white_check_mark: add (Numeric Types)
 - :large_orange_diamond: add (Date Types)
 
-#### :large_orange_diamond: Subtraction
+#### Subtraction
 - :white_check_mark: sub (Numeric Types)
 - :large_orange_diamond: sub (Date Types)
 
-#### :large_orange_diamond: Multiplication
+#### Multiplication
 - :white_check_mark: mul (Numeric Types)
 - :red_circle: mul (Date Types)
 
-#### :large_orange_diamond: Division
+#### Division
 - :white_check_mark: div (Numeric Types)
 - :red_circle: div (Date Types)
 - :white_check_mark: divby (Numeric Types)
 - :white_check_mark: mod (Numeric Types)
 
-#### :white_check_mark: Negation
+#### Negation
 - :white_check_mark: - (Numeric Types)
 
 ### :white_check_mark: Grouping with parenthesis
 
 ### String and Collection Functions
 
-#### :red_circle: concat
+#### concat
 - :red_circle: concat(String, String)
 - :red_circle: concat(Collection, Collection)
 
-#### :white_check_mark: contains
+#### contains
 - :white_check_mark: contains(String, String)
 - :white_check_mark: contains(Collection, Collection)
 
-#### :large_orange_diamond: endswith
+#### endswith
 - :white_check_mark: endswith(String, String)
 - :red_circle: endswith(Collection, Collection)
 
-#### :red_circle: indexof
+#### indexof
 - :red_circle: concat(String, String)
 - :red_circle: concat(Collection, Collection)
 
-#### :white_check_mark: length
+#### length
 - :white_check_mark: length(Edm.String)
 - :white_check_mark: length(Collection)
 
-#### :large_orange_diamond: startswith
+#### startswith
 - :white_check_mark: endswith(String, String)
 - :red_circle: endswith(Collection, Collection)
 
-#### :red_circle: substring
+#### substring
 - :red_circle: substring(String, Number)
 - :red_circle: substring(String, Number, Number)
 - :red_circle: substring(Collection, Number)
 - :red_circle: substring(Collection, Number, Number)
 
-### String and Collection Functions
+### Collection Functions
+- :red_circle: hassubset(Collection, Collection)
+- :red_circle: hassubsequence(Collection, Collection)
+
+### String Functions
+- :white_check_mark: matchesPattern(String, String)
+- :white_check_mark: tolower(String)
+- :white_check_mark: toupper(String)
+- :white_check_mark: trim(String)
+
+### Date and Time Functions
+- :red_circle: date(Datetime)
+- :white_check_mark: year(Date)
+- :white_check_mark: year(Datetime)
+- :white_check_mark: month(Date)
+- :white_check_mark: month(Datetime)
+- :white_check_mark: day(Date)
+- :white_check_mark: day(Datetime)
+- :red_circle: time(Date)
+- :red_circle: time(Datetime)
+- :white_check_mark: hour(Date)
+- :white_check_mark: hour(Datetime)
+- :white_check_mark: minute(Datetime)
+- :white_check_mark: second(Datetime)
+- :white_check_mark: fractionalseconds(Datetime)
+- :red_circle: totaloffsetminutes(Datetime)
+- :red_circle: totalseconds(Datetime)
+- :white_check_mark: maxdatetime()
+- :white_check_mark: now()
+- :white_check_mark: mindatetime()
