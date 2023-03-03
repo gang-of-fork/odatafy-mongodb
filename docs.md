@@ -143,8 +143,8 @@
 - :red_circle: geo.length(GeometryLineString)
 
 ### Conditional Functions
-- red_circle: case(Edm.Boolean:expression, ..., Edm.Boolean:expression)
+- :red_circle: case(Edm.Boolean:expression, ..., Edm.Boolean:expression)
 
 ### Lambda Operators
-- red_circle: any(Symbol:Edm.Boolean:expression)
-- red_circle: all(Symbol:Edm.Boolean:expression)
+- :red_circle: any(Symbol:Edm.Boolean:expression)
+- :red_circle: all(Symbol:Edm.Boolean:expression)
