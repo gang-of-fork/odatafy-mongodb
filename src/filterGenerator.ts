@@ -210,6 +210,36 @@ function processFuncNode2Args(node: FuncNode2Args) {
         case FuncNames2Args.Hassubsequence:
         case FuncNames2Args.Hassubset:
         case FuncNames2Args.Concat:
+            if(
+                (node.args[0].nodeType == NodeTypes.ConstantNode && node.args[0].type == ConstantNodeTypes.String) &&
+                (node.args[1].nodeType == NodeTypes.ConstantNode && node.args[1].type == ConstantNodeTypes.String)
+            ) {
+                return {
+                    $concat: [processNode(node.args[0]), processNode(node.args[1])]
+                }
+            } else if(
+                (node.args[0].nodeType == NodeTypes.ConstantNode && node.args[0].type == ConstantNodeTypes.Array) &&
+                (node.args[1].nodeType == NodeTypes.ConstantNode && node.args[1].type == ConstantNodeTypes.Array)
+            ) {
+                return {
+                    $concatArrays: [processNode(node.args[0]), processNode(node.args[1])]
+                }
+            }
+
+            return { 
+                "$switch": {
+                    "branches": [
+                        { 
+                            "case": { $and: [ { $isArray: [ processNode(node.args[0]) ] }, { $isArray: [ processNode(node.args[1]) ] } ] }, 
+                            "then": { $concatArrays: [processNode(node.args[0]), processNode(node.args[1])] } 
+                        },
+                        { 
+                            "case": { $and: [ { $eq: [ { $type: processNode(node.args[0]) }, 'string' ] }, { $eq: [ { $type: processNode(node.args[1]) }, 'string' ] } ] }, 
+                            "then": { $concat: [processNode(node.args[0]), processNode(node.args[1])] } 
+                        }
+                    ]
+                }
+            }
 
         default:
             throw new Error(`Function ${node.func} is not supported`)

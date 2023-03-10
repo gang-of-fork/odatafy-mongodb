@@ -57,8 +57,8 @@
 ### String and Collection Functions
 
 #### concat
-- :red_circle: concat(String, String)
-- :red_circle: concat(Collection, Collection)
+- :white_check_mark: concat(String, String)
+- :white_check_mark: concat(Collection, Collection)
 
 #### contains
 - :white_check_mark: contains(String, String)
@@ -69,16 +69,16 @@
 - :red_circle: endswith(Collection, Collection)
 
 #### indexof
-- :red_circle: concat(String, String)
-- :red_circle: concat(Collection, Collection)
+- :red_circle: indexof(String, String)
+- :red_circle: indexof(Collection, Collection)
 
 #### length
 - :white_check_mark: length(Edm.String)
 - :white_check_mark: length(Collection)
 
 #### startswith
-- :white_check_mark: endswith(String, String)
-- :red_circle: endswith(Collection, Collection)
+- :white_check_mark: startswith(String, String)
+- :red_circle: startswith(Collection, Collection)
 
 #### substring
 - :red_circle: substring(String, Number)
