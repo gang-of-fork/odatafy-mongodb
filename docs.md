@@ -10,6 +10,26 @@
 
 :red_circle: (Currently) Not Supported
 
+### Query Options
+
+#### $select
+
+#### $expand
+
+#### $compute
+
+#### $filter
+
+#### $orderby
+
+#### $top
+
+#### $skip
+
+#### $count
+
+#### $search
+
 ### Types
 
 ### Logical Operators
