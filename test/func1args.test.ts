@@ -191,16 +191,6 @@ describe('Function integration tests', () => {
                             "id": 1
                         }
                     ]
-                },
-                {
-                    "name": "test round",
-                    "tableName": "inventoryItems",
-                    "url": "?$filter=round(price) eq 3.75",
-                    "expected": [
-                        {
-                            "id": 6
-                        }
-                    ]
                 }
             ]
         }

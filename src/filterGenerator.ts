@@ -3,6 +3,7 @@ import {
     OperatorNode, ConstantNode, SymbolNode,
     OperatorNodeOperators, FuncNames0Args, FuncNode0Args,
     FuncNames1Args, FuncNode1Args, FuncNode2Args,
+    ConstantNodeTypes,
     FuncNames2Args,
     FuncNodeVarArgs,
     FuncNamesVarArgs
@@ -17,7 +18,6 @@ type ProcessingOpts = {
  * TODO: Support geo functions
  * TODO: date and time and totalseconds currently not supported - fun1arg
  * TODO: totaloffset minutes not supported - func1arg
- * TODO: Add advanced support for length based on type - func1arg
  */
 
 /**
@@ -120,8 +120,17 @@ function processFuncNode1Args(node: FuncNode1Args) {
                 $ceil: processNode(node.args[0])
             }
         case FuncNames1Args.Length:
-            console.log(node.args[0]);
-            return {}
+            if(node.args[0].nodeType == NodeTypes.ConstantNode && node.args[0].type == ConstantNodeTypes.Array) {
+                return { $size: [ processNode(node.args[0]) ] }
+            }
+
+            return { 
+                $cond: { 
+                    if: { $isArray: [ processNode(node.args[0]) ] }, 
+                    then: { $size: [ processNode(node.args[0]) ] }, 
+                    else: { $strLenCP: processNode(node.args[0]) } 
+                } 
+            }
         case FuncNames1Args.Toupper:
             return {
                 $toUpper: processNode(node.args[0])
@@ -138,7 +147,7 @@ function processFuncNode1Args(node: FuncNode1Args) {
             }
         case FuncNames1Args.Round:
             return { 
-                $round: [processNode(node.args[0]), 2] 
+                $round: [processNode(node.args[0])] 
             }
         default:
             throw new Error(`Function ${node.func} is not supported`)
@@ -149,7 +158,91 @@ function processFuncNode1Args(node: FuncNode1Args) {
 //TODO: add functions with 2 args
 function processFuncNode2Args(node: FuncNode2Args) {
     switch(node.func) {
+        case FuncNames2Args.Contains:
+            if(node.args[0].nodeType == NodeTypes.ConstantNode && node.args[0].type == ConstantNodeTypes.String) {
+                return {
+                    $regexMatch: {
+                        input: processNode(node.args[0]),
+                        regex: processNode(node.args[1]).toString()
+                    }
+                } 
+            }
+
+            return { 
+                $cond: { 
+                    if: { $isArray: [ processNode(node.args[0]) ] }, 
+                    then: {
+                        $in: [processNode(node.args[1]), processNode(node.args[0])]
+                    }, 
+                    else: {
+                        $regexMatch: {
+                            input: processNode(node.args[0]),
+                            regex: processNode(node.args[1]).toString()
+                        }
+                    } 
+                } 
+            }
+        case FuncNames2Args.MatchesPattern:
+            return {
+                $regexMatch: {
+                    input: processNode(node.args[0]),
+                    regex: processNode(node.args[1]).toString()
+                }
+            } 
+
+        case FuncNames2Args.Startswith:
+            return {
+                $regexMatch: {
+                    input: processNode(node.args[0]),
+                    regex: `^${processNode(node.args[1]).toString()}`
+                }
+            }
+        
+        case FuncNames2Args.Endswith:
+            return {
+                $regexMatch: {
+                    input: processNode(node.args[0]),
+                    regex: `${processNode(node.args[1]).toString()}$`
+                }
+            }
+        
         case FuncNames2Args.Indexof:
+        case FuncNames2Args.Hassubsequence:
+        case FuncNames2Args.Hassubset:
+        case FuncNames2Args.Concat:
+            if(
+                (node.args[0].nodeType == NodeTypes.ConstantNode && node.args[0].type == ConstantNodeTypes.String) &&
+                (node.args[1].nodeType == NodeTypes.ConstantNode && node.args[1].type == ConstantNodeTypes.String)
+            ) {
+                return {
+                    $concat: [processNode(node.args[0]), processNode(node.args[1])]
+                }
+            } else if(
+                (node.args[0].nodeType == NodeTypes.ConstantNode && node.args[0].type == ConstantNodeTypes.Array) &&
+                (node.args[1].nodeType == NodeTypes.ConstantNode && node.args[1].type == ConstantNodeTypes.Array)
+            ) {
+                return {
+                    $concatArrays: [processNode(node.args[0]), processNode(node.args[1])]
+                }
+            }
+
+            return { 
+                "$switch": {
+                    "branches": [
+                        { 
+                            "case": { $and: [ { $isArray: [ processNode(node.args[0]) ] }, { $isArray: [ processNode(node.args[1]) ] } ] }, 
+                            "then": { $concatArrays: [processNode(node.args[0]), processNode(node.args[1])] } 
+                        },
+                        { 
+                            "case": { $and: [ { $eq: [ { $type: processNode(node.args[0]) }, 'string' ] }, { $eq: [ { $type: processNode(node.args[1]) }, 'string' ] } ] }, 
+                            "then": { $concat: [processNode(node.args[0]), processNode(node.args[1])] } 
+                        }
+                    ]
+                }
+            }
+
+        default:
+            throw new Error(`Function ${node.func} is not supported`)
     }
 }
 

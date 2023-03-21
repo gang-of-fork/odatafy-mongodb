@@ -1,6 +1,6 @@
 {
   "name": "odatafy-mongodb",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "convert oData requests through odatafy to MongoDB queries ",
   "main": "./dist/index.js",
   "keywords": [
