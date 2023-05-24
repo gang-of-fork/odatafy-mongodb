@@ -15,7 +15,8 @@ import { Document } from 'mongodb';
 export type MongoDBODatafyOpts = {
     expandMapping?: CollectionMap,
     returnEmptyPipeline?: boolean,
-    regexSearchFields?: string[]
+    regexSearchFields?: string[],
+    returnDataCountQuery?: boolean
 }
 
 /**
@@ -53,6 +54,7 @@ export function getQueryFromUrl(oDataUrl: string, opts?: MongoDBODatafyOpts): Do
  */
 export function getQuery(parameters: oDataParameters, opts?: MongoDBODatafyOpts): Document[] {
     const pipeline: Document[] = [];
+    let countPipeline: Document[] = [];
 
     if (parameters.expand) {
         pipeline.push(...generateLookupFromExpand(parameters.expand, opts?.expandMapping? opts.expandMapping: {}));
@@ -65,6 +67,12 @@ export function getQuery(parameters: oDataParameters, opts?: MongoDBODatafyOpts)
     if (parameters.filter) {
         pipeline.push(generateMatchFromFilterExpr(parameters.filter));
     }
+
+    /* copy to count query */
+    if(opts?.returnDataCountQuery) {
+        countPipeline = [...pipeline];
+    }
+
 
     if (parameters.orderby) {
         pipeline.push(generateSortFromOrderbyExpr(parameters.orderby));
@@ -83,7 +91,10 @@ export function getQuery(parameters: oDataParameters, opts?: MongoDBODatafyOpts)
     }
 
     if(parameters.search) {
-        pipeline.push(generateSearchFromSearchExpr(parameters.search, opts?.regexSearchFields));
+        const searchExpr = generateSearchFromSearchExpr(parameters.search, opts?.regexSearchFields);
+
+        pipeline.push(searchExpr);
+        countPipeline.push(searchExpr);
     }
 
     //add default steps if pipline must not be empty - i.e. in mongoose an empty pipeline returns an error
@@ -100,6 +111,36 @@ export function getQuery(parameters: oDataParameters, opts?: MongoDBODatafyOpts)
                 }
             }
         )
+
+        countPipeline = [...pipeline];
+    }
+
+    if(opts?.returnDataCountQuery) {
+        countPipeline.push({
+            $count: "count"
+        });
+
+        return [
+            {
+                "$facet": {
+                    "data": pipeline,
+                    "countTmp": countPipeline
+                }
+            },
+            {
+                "$addFields": {
+                    "countTmp2": {
+                        "$first": "$countTmp"
+                    }
+                }
+            },
+            {
+                "$project": {
+                    "data": "$data",
+                    "count": "$countTmp2.count"
+                }
+            }
+        ]
     }
 
     return pipeline;
