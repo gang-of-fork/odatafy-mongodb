@@ -51,6 +51,12 @@ describe('MongoDB Query integration tests', () => {
     //@ts-expect-error load testcase json
     testcases.default.forEach((testcase: { name: string, url: string, tableName: string, expected: ExpectedResult[], checkOrder?: boolean }) => {
         test(testcase.name, async () => {
+            const querycnt = getQueryFromUrl(`?$top=1`, { returnDataCountQuery: true });
+
+            const queryResultcnt = await mdbClient.db(dbname).collection(testcase.tableName).aggregate(querycnt).toArray();
+
+            console.log(queryResultcnt)
+
             const query = getQueryFromUrl(testcase.url);
 
             const queryResult = await mdbClient.db(dbname).collection(testcase.tableName).aggregate(query).toArray();
