@@ -16,7 +16,8 @@ export type MongoDBODatafyOpts = {
     expandMapping?: CollectionMap,
     returnEmptyPipeline?: boolean,
     regexSearchFields?: string[],
-    returnDataCountQuery?: boolean
+    returnDataCountQuery?: boolean,
+    returnCountOnly?: boolean
 }
 
 /**
@@ -119,6 +120,10 @@ export function getQuery(parameters: oDataParameters, opts?: MongoDBODatafyOpts)
         countPipeline.push({
             $count: "count"
         });
+
+        if(opts?.returnCountOnly) {
+            return countPipeline
+        }
 
         return [
             {
