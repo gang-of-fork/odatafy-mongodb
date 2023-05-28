@@ -70,7 +70,7 @@ export function getQuery(parameters: oDataParameters, opts?: MongoDBODatafyOpts)
     }
 
     /* copy to count query */
-    if(opts?.returnDataCountQuery) {
+    if(opts?.returnDataCountQuery || opts?.returnCountOnly) {
         countPipeline = [...pipeline];
     }
 
@@ -116,15 +116,15 @@ export function getQuery(parameters: oDataParameters, opts?: MongoDBODatafyOpts)
         countPipeline = [...pipeline];
     }
 
+    countPipeline.push({
+        $count: "count"
+    });
+
+    if(opts?.returnCountOnly) {
+        return countPipeline
+    }
+
     if(opts?.returnDataCountQuery) {
-        countPipeline.push({
-            $count: "count"
-        });
-
-        if(opts?.returnCountOnly) {
-            return countPipeline
-        }
-
         return [
             {
                 "$facet": {
